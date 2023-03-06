@@ -14,6 +14,23 @@ import (
 	"go.temporal.io/sdk/client"
 )
 
+func CORSMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+
+		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization, accept, origin, Cache-Control, X-Requested-With")
+		c.Header("Access-Control-Allow-Methods", "POST,HEAD,PATCH, OPTIONS, GET, PUT")
+
+		if c.Request.Method == "OPTIONS" {
+			c.AbortWithStatus(204)
+			return
+		}
+
+		c.Next()
+	}
+}
+
 func main() {
 
 	//context := *gin.Context,
@@ -24,19 +41,22 @@ func main() {
 	if err != nil {
 		log.Fatalln("Unable to create Temporal client.", err)
 	}
-	fmt.Printf("Creating Temporal client", tc)
+	fmt.Printf("Creating Temporal client %d", tc)
 
 	router := gin.Default()
+	router.Use(CORSMiddleware())
+
 	router.POST("/initiateWF", initiateWF(tc))
-	router.POST("/notify", notify())
-	router.GET("/getStatus", getStatus())
+	router.GET("/notify", notify(tc))
+	router.GET("/getStatus", getStatus(tc))
 	router.Run("localhost:9090")
 
 }
 
-func getStatus() gin.HandlerFunc {
+func getStatus(tc client.Client) gin.HandlerFunc {
 
 	fn := func(c *gin.Context) {
+
 		c.IndentedJSON(http.StatusOK, gin.H{"message": "active"})
 	}
 	return gin.HandlerFunc(fn)
@@ -67,20 +87,29 @@ func initiateWF(tc client.Client) gin.HandlerFunc {
 
 		log.Printf("WorkflowID: %s RunID: %s\n", we.GetID(), we.GetRunID())
 
-		c.IndentedJSON(http.StatusCreated, init)
+		c.IndentedJSON(http.StatusCreated, id)
 
 	}
 	return gin.HandlerFunc(fn)
 }
 
-func notify() gin.HandlerFunc {
+func notify(tc client.Client) gin.HandlerFunc {
 
 	fn := func(c *gin.Context) {
 		workflowId := c.Query("workflowId")
+		log.Println(workflowId)
 		err := signal.SendNotifySignal(workflowId, true)
 		if err != nil {
 			log.Fatalln("Unable to notify.", err)
 		}
+
+		//response, err := tc.QueryWorkflow(context.Background(), workflowId, runID, queryType)
+		/*if err != nil {
+			log.Fatalln("Unable to start the Workflow:", err)
+		} */
+
+		//Un-comment for pricing
+		c.Writer.WriteHeader(204)
 	}
 
 	return gin.HandlerFunc(fn)

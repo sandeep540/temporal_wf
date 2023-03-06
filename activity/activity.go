@@ -15,7 +15,7 @@ func InitActivity(ctx context.Context, init app.Init) (string, error) {
 func SignUp(ctx context.Context) (string, error) {
 
 	log.Printf("User Details from sign-up")
-	return "SignUp Activity Completed", nil
+	return "SignUp Activity Initiated", nil
 }
 
 func CreateUser(ctx context.Context, init app.Init) (string, error) {
@@ -23,6 +23,13 @@ func CreateUser(ctx context.Context, init app.Init) (string, error) {
 
 	return "success", nil
 }
+
+func ShowPricingPlans(ctx context.Context) (string, error) {
+	log.Printf("Show Pricing Plans for User")
+
+	return "Show Pricing Plans for User", nil
+}
+
 func CompleteWF(ctx context.Context) (string, error) {
 	log.Printf("Closing the Workflow ")
 

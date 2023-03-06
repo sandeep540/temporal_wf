@@ -22,6 +22,7 @@ func main() {
 	w.RegisterWorkflow(workflow.SignUpWorkflow)
 	w.RegisterActivity(activity.InitActivity)
 	w.RegisterActivity(activity.SignUp)
+	w.RegisterActivity(activity.ShowPricingPlans)
 	w.RegisterActivity(activity.CompleteWF)
 	if err := w.Run(worker.InterruptCh()); err != nil {
 		log.Fatalln(err)

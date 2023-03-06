@@ -44,6 +44,8 @@ func SignUpWorkflow(ctx workflow.Context, input app.Init) (string, error) {
 
 	initErr := workflow.ExecuteActivity(ctx, activity.InitActivity, input).Get(ctx, &Output)
 
+	log.Printf("InitActivity Output ------ > %s  \n", Output)
+
 	if initErr != nil {
 		return "", initErr
 	}
@@ -56,6 +58,8 @@ func SignUpWorkflow(ctx workflow.Context, input app.Init) (string, error) {
 
 	signupErr := workflow.ExecuteActivity(ctx, activity.SignUp, user).Get(ctx, &Output)
 
+	log.Printf("SignUp Output ------ > %s  \n", Output)
+
 	if signupErr != nil {
 		return "", signupErr
 	}
@@ -67,7 +71,16 @@ func SignUpWorkflow(ctx workflow.Context, input app.Init) (string, error) {
 		log.Println("Workflow couldn't be completed! ")
 
 	}
+
+	pricingErr := workflow.ExecuteActivity(ctx, activity.ShowPricingPlans, nil).Get(ctx, &Output)
+	if pricingErr != nil {
+		return "", pricingErr
+	}
+
+	log.Printf("SignUp Output ------ > %s  \n", Output)
+
 	workflow.ExecuteActivity(ctx, activity.CompleteWF, nil).Get(ctx, nil)
+
 	return "success", nil
 }
 
