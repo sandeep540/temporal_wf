@@ -1,0 +1,26 @@
+# This sample workflow execute 3 steps in sequence.
+# 1) sampleActivity1, takes arg1 as input, and put result as result1.
+# 2) sampleActivity2, takes result1 as input, and put result as result2.
+# 3) sampleActivity3, takes args2 and result2 as input, and put result as result3.
+
+variables:
+  sessionId: 1029292
+  JWT: 548702c9-6dcd-0000-ddsdfs-30bc5fd8826e
+  customer: KodeKloud
+
+root:
+  sequence:
+    elements:
+     - activity:
+        name: StartActivity
+        arguments:
+          - sessionId
+          - JWT
+          - customer
+        result: result1
+     - activity:
+        name: CreateTenet
+        result: result2
+     - activity:
+        name: FinishActivity
+        result: result3

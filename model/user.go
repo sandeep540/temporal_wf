@@ -1,4 +1,4 @@
-package app
+package model
 
 const SignupUserQueue = "SIGNUP_USER_QUEUE"
 

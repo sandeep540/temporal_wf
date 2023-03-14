@@ -1,0 +1,17 @@
+[{
+    "workflowId": "01",
+    "activity": "SignUp",
+    "serviceURL": "/signup"
+  }, {
+    "workflowId": "02",
+    "activity": "Pricing",
+    "serviceURL": "/pricing"
+  }, {
+    "workflowId": "03",
+    "activity": "Error",
+    "serviceURL": "/error"
+  }, {
+    "workflowId": "04",
+    "activity": "Demo",
+    "serviceURL": "/demo"
+  }]

@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"temporal_wf/activity"
-	"temporal_wf/app"
+	app "temporal_wf/model"
 	"temporal_wf/workflow"
 
 	"go.temporal.io/sdk/client"
@@ -24,8 +24,17 @@ func main() {
 	w.RegisterActivity(activity.SignUp)
 	w.RegisterActivity(activity.ShowPricingPlans)
 	w.RegisterActivity(activity.CompleteWF)
+
+	w.RegisterWorkflow(workflow.SimpleDSLWorkflow)
+	w.RegisterActivity(&activity.SampleActivities{})
+
 	if err := w.Run(worker.InterruptCh()); err != nil {
 		log.Fatalln(err)
 	}
 
+	//w1 := worker.New(c, "DSL", worker.Options{})
+
+	/* if err := w1.Run(worker.InterruptCh()); err != nil {
+		log.Fatalln(err)
+	} */
 }

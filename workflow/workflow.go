@@ -3,7 +3,7 @@ package workflow
 import (
 	"log"
 	"temporal_wf/activity"
-	"temporal_wf/app"
+	"temporal_wf/model"
 	"temporal_wf/signal"
 	"time"
 
@@ -18,7 +18,7 @@ type UserDetails struct {
 }
 
 // @@@SNIPSTART
-func SignUpWorkflow(ctx workflow.Context, input app.Init) (string, error) {
+func SignUpWorkflow(ctx workflow.Context, input model.Init) (string, error) {
 
 	// RetryPolicy specifies how to automatically handle retries if an Activity fails.
 	retrypolicy := &temporal.RetryPolicy{

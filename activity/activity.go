@@ -3,10 +3,10 @@ package activity
 import (
 	"context"
 	"log"
-	"temporal_wf/app"
+	"temporal_wf/model"
 )
 
-func InitActivity(ctx context.Context, init app.Init) (string, error) {
+func InitActivity(ctx context.Context, init model.Init) (string, error) {
 
 	log.Printf("init Details from init %s.\n\n", init)
 	return "Init Activity Completed", nil
@@ -18,7 +18,7 @@ func SignUp(ctx context.Context) (string, error) {
 	return "SignUp Activity Initiated", nil
 }
 
-func CreateUser(ctx context.Context, init app.Init) (string, error) {
+func CreateUser(ctx context.Context, init model.Init) (string, error) {
 	log.Printf("Confirmation of Create user %s.\n\n", init)
 
 	return "success", nil
